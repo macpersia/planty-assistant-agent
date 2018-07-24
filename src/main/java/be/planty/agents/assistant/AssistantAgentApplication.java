@@ -19,8 +19,12 @@ public class AssistantAgentApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        final var agent = AssistantAgent.getInstance();
+        final var agent = createAgent();
         newSingleThreadExecutor().submit(agent);
+    }
+
+    protected AssistantAgent createAgent() {
+        return new AssistantAgent();
     }
 }
 

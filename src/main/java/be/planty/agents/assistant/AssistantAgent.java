@@ -27,14 +27,6 @@ public class AssistantAgent implements Runnable {
     static final String password = System.getProperty("be.planty.assistant.access.key");
     static final String wsUrl = System.getProperty("be.planty.assistant.ws.url"); // e.g. ws://localhost:8080/websocket
 
-    private static final AssistantAgent instance = new AssistantAgent();
-
-    private AssistantAgent() {}
-
-    public static AssistantAgent getInstance() {
-        return instance;
-    }
-
     public void run() {
         try {
             final var accessToken = login(baseUrl, username, password);
