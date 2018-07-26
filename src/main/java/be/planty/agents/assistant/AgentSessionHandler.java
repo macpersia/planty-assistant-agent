@@ -23,7 +23,7 @@ public class AgentSessionHandler extends MyStompSessionHandler {
         logger.info("Received headers: " + headers);
         logger.info("Received payload: " + payload);
         if (headers.getDestination().equals("/topic/action.req")) {
-            session.send("/topic/action.res", "Thank you for choosing me!");
+            session.send("/topic/action.res", "Thank you for choosing us!");
         }
     }
 

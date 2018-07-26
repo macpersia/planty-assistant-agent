@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>be.planty.agents.assistant</groupId>
-    <artifactId>assistant-agent</artifactId>
+    <artifactId>planty-assistant-agent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Assistant Agent</name>
+    <name>Planty Assistant Agent</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

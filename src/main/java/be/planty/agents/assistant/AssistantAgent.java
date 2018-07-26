@@ -27,12 +27,19 @@ public class AssistantAgent implements Runnable {
     static final String password = System.getProperty("be.planty.assistant.access.key");
     static final String wsUrl = System.getProperty("be.planty.assistant.ws.url"); // e.g. ws://localhost:8080/websocket
 
+    private final String agentName;
+
+    public AssistantAgent(String agentName) {
+        this.agentName = agentName;
+    }
+
+
     public void run() {
         try {
             final var accessToken = login(baseUrl, username, password);
             final var url = wsUrl + "/pairing?access_token=" + accessToken;
             final var stompClient = createStompClient();
-            final var handler = new PairingSessionHandler(accessToken, wsUrl);
+            final var handler = new PairingSessionHandler(accessToken, wsUrl, agentName);
             logger.info("Connecting to: " + url + " ...");
             stompClient.connect(url, handler);
 

@@ -24,7 +24,7 @@ public class AssistantAgentApplication implements CommandLineRunner {
     }
 
     protected AssistantAgent createAgent() {
-        return new AssistantAgent();
+        return new AssistantAgent("Agent X");
     }
 }
 
