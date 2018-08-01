@@ -26,11 +26,11 @@ public class PairingSessionHandler extends MyStompSessionHandler {
     @Override
     public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
         logger.info("Connected!");
-        session.subscribe("/topic/pairing.res", this);
+        session.subscribe("/user/queue/pairing-responses", this);
         final Integer verifiCode =  100000 + new Random().nextInt(899999);
         final var payload = new PairingRequest(agentName, verifiCode.toString(), null);
         logger.info("Sending: " + toPrettyJson(payload));
-        session.send("/topic/pairing.req", payload);
+        session.send("/topic/pairing-requests", payload);
     }
 
     @Override
