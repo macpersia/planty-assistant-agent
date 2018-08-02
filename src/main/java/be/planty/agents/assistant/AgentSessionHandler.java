@@ -23,9 +23,13 @@ public class AgentSessionHandler extends MyStompSessionHandler {
     public void handleFrame(StompHeaders headers, Object payload) {
         logger.info("Received headers: " + headers);
         logger.info("Received payload: " + payload);
-        if (headers.getDestination().startsWith("/user/queue/action-requests")) {
-            session.send("/topic/action-responses", "Thank you for choosing us!");
+        if (payload.equals("Ping!")) {
+            final String response = "Pong!";
+            logger.info("Sending: " + response);
+            session.send("/topic/action-responses", response);
         }
+//        if (headers.getDestination().startsWith("/user/queue/action-requests")) {
+//            session.send("/topic/action-responses", "Thank you for choosing us!");
+//        }
     }
-
 }
