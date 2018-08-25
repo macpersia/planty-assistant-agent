@@ -16,11 +16,14 @@ public class PairingSessionHandler extends MyStompSessionHandler {
     private final String accessToken;
     private final String wsUrl;
     private final String agentName;
+    private final AgentSessionHandler agentSessionHandler;
 
-    public PairingSessionHandler(String accessToken, String wsUrl, String agentName){
+    public PairingSessionHandler(String accessToken, String wsUrl, String agentName,
+                                 AgentSessionHandler agentSessionHandler){
         this.accessToken = accessToken;
         this.wsUrl = wsUrl;
         this.agentName = agentName;
+        this.agentSessionHandler = agentSessionHandler;
     }
 
     @Override
@@ -44,12 +47,11 @@ public class PairingSessionHandler extends MyStompSessionHandler {
         }
     }
 
-    static void subscribeToAgentRequests(String wsUrl, String accessToken) {
+    void subscribeToAgentRequests(String wsUrl, String accessToken) {
         final var url = wsUrl + "/action?access_token=" + accessToken;
         final var stompClient = createStompClient();
-        final var handler = new AgentSessionHandler();
+        final var handler = this.agentSessionHandler;
         logger.info("Connecting to: " + url + " ...");
         stompClient.connect(url, handler);
     }
-
 }

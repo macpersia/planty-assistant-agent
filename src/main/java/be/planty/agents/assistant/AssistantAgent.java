@@ -28,24 +28,33 @@ public class AssistantAgent implements Runnable {
     static final String wsUrl = System.getProperty("be.planty.assistant.ws.url"); // e.g. ws://localhost:8080/websocket
 
     private final String agentName;
+    private final AgentSessionHandler agentSessionHandler;
 
     public AssistantAgent(String agentName) {
-        this.agentName = agentName;
+        this(agentName, new AgentSessionHandler());
     }
 
+    public AssistantAgent(String agentName, AgentSessionHandler agentSessionHandler) {
+        this.agentName = agentName;
+        this.agentSessionHandler = agentSessionHandler;
+    }
 
     public void run() {
         try {
             final var accessToken = login(baseUrl, username, password);
             final var url = wsUrl + "/pairing?access_token=" + accessToken;
             final var stompClient = createStompClient();
-            final var handler = new PairingSessionHandler(accessToken, wsUrl, agentName);
+            final var handler = getPairingSessionHandler(accessToken);
             logger.info("Connecting to: " + url + " ...");
             stompClient.connect(url, handler);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
+    }
+
+    protected PairingSessionHandler getPairingSessionHandler(String accessToken) {
+        return new PairingSessionHandler(accessToken, wsUrl, agentName, agentSessionHandler);
     }
 
     static WebSocketStompClient createStompClient() {
