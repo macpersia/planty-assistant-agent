@@ -8,7 +8,8 @@ import org.springframework.messaging.simp.stomp.StompSession;
 public class AgentSessionHandler extends MyStompSessionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(AgentSessionHandler.class);
-    private StompSession session;
+
+    protected StompSession session;
 
     @Override
     public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
