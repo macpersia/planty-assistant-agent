@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 
+import java.util.AbstractMap.SimpleEntry;
+
 public class AgentSessionHandler extends MyStompSessionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(AgentSessionHandler.class);
@@ -28,8 +30,16 @@ public class AgentSessionHandler extends MyStompSessionHandler {
             final String response = "Pong!";
             logger.info("Sending: " + response);
             session.send("/topic/action-responses", response);
+
+        } else if (payload instanceof SimpleEntry
+                && ((SimpleEntry) payload).getKey().equals("data")
+                && ((SimpleEntry) payload).getValue().equals("Ping!") ) {
+            final var response = new SimpleEntry<>("data", "Pong!");
+            logger.info("Sending: " + response);
+            session.send("/topic/action-responses", response);
         }
-//        if (headers.getDestination().startsWith("/user/queue/action-requests")) {
+
+        //        if (headers.getDestination().startsWith("/user/queue/action-requests")) {
 //            session.send("/topic/action-responses", "Thank you for choosing us!");
 //        }
     }
