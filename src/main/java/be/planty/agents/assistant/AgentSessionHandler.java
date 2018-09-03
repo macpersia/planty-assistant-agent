@@ -48,19 +48,20 @@ public class AgentSessionHandler extends MyStompSessionHandler {
                         payload : toPrettyJson(payload)));
 
         final String dest = "/topic/action-responses";
+        final StompHeaders newHeaders = new StompHeaders();
+        headers.forEach(newHeaders::put);
+        newHeaders.setDestination(dest);
+        newHeaders.set("correlation-id", headers.getMessageId());
         if (payload.equals("Ping!")) {
             final String response = "Pong!";
             logger.info("Sending: " + response);
-            session.send(dest, response);
+            session.send(newHeaders, response);
 
         } else if (payload instanceof ActionRequest
                     && ((ActionRequest)payload).action.equals("Ping!")) {
 
             final ActionResponse response = new ActionResponse(0);
             logger.info("Sending: " + response);
-            final StompHeaders newHeaders = new StompHeaders();
-            headers.forEach(newHeaders::put);
-            newHeaders.setDestination(dest);
             newHeaders.set(PAYLOAD_TYPE_KEY, response.getClass().getTypeName());
             session.send(newHeaders, response);
         }
