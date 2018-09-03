@@ -47,26 +47,27 @@ public class AgentSessionHandler extends MyStompSessionHandler {
                 (payload instanceof String ?
                         payload : toPrettyJson(payload)));
 
-        final String dest = "/topic/action-responses";
-        final StompHeaders newHeaders = new StompHeaders();
-        headers.forEach(newHeaders::put);
-        newHeaders.setDestination(dest);
-        newHeaders.set("correlation-id", headers.getMessageId());
+        final Object response;
+        final StompHeaders newHeaders = createStompHeaders(headers);
         if (payload.equals("Ping!")) {
-            final String response = "Pong!";
-            logger.info("Sending: " + response);
-            session.send(newHeaders, response);
+            response = "Pong!";
 
         } else if (payload instanceof ActionRequest
                     && ((ActionRequest)payload).action.equals("Ping!")) {
-
-            final ActionResponse response = new ActionResponse(0);
-            logger.info("Sending: " + response);
+            response = new ActionResponse(0);
             newHeaders.set(PAYLOAD_TYPE_KEY, response.getClass().getTypeName());
-            session.send(newHeaders, response);
-        }
-//        if (headers.getDestination().startsWith("/user/queue/action-requests")) {
-//            session.send("/topic/action-responses", "Thank you for choosing us!");
-//        }
+        } else
+            return;
+        
+        logger.info("Sending: " + response);
+        session.send(newHeaders, response);
+    }
+
+    protected StompHeaders createStompHeaders(StompHeaders headers) {
+        final StompHeaders newHeaders = new StompHeaders();
+        headers.forEach(newHeaders::put);
+        newHeaders.setDestination("/topic/action-responses");
+        newHeaders.set("correlation-id", headers.getMessageId());
+        return newHeaders;
     }
 }
