@@ -25,7 +25,7 @@ node ('ecs2') {
 	stage('build') {
 		//withMaven(jdk: 'jdk10', maven: 'maven-3.6.0', /*, tempBinDir: ''*/) {
         /* Requires the Docker Pipeline plugin to be installed */
-        docker.image('openjdk:10').inside {
+        docker.image('artifactory.topdanmark.local:5001/openjdk:10').inside {
             sh 'java -version'
 			sh "mvn install -DskipTests"
         }
