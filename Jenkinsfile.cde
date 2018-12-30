@@ -1,5 +1,5 @@
-//node ('ecs2') {
-node ('ecs-fargate') {
+node ('ecs2') {
+//node ('ecs-fargate') {
 	def branch = "${env.BRANCH_NAME}".toLowerCase()
 
 	stage('git') {
@@ -29,7 +29,8 @@ node ('ecs-fargate') {
         //docker.withRegistry('artifactory.topdanmark.local:5001')
         //      .image('openjdk:10').inside('-v $HOME/.m2:/root/.m2') {
         docker.image('artifactory.topdanmark.local:5001/openjdk:10')
-              .inside('-v $HOME/.m2:/root/.m2') {
+              //.inside('-v $HOME/.m2:/root/.m2')
+              {
                     sh 'java -version'
                     sh "mvn install -DskipTests"
               }
