@@ -1,4 +1,5 @@
-node ('ecs2') {
+//node ('ecs2') {
+node {
 	def branch = "${env.BRANCH_NAME}".toLowerCase()
 
 	stage('git') {
@@ -25,10 +26,11 @@ node ('ecs2') {
 	stage('build') {
 		//withMaven(jdk: 'jdk10', maven: 'maven-3.6.0', /*, tempBinDir: ''*/) {
         /* Requires the Docker Pipeline plugin to be installed */
-        docker.image('artifactory.topdanmark.local:5001/openjdk:10').inside {
-            sh 'java -version'
-			sh "mvn install -DskipTests"
-        }
+        docker.image('artifactory.topdanmark.local:5001/openjdk:10')
+              .inside('-v $HOME/.m2:/root/.m2') {
+                    sh 'java -version'
+                    sh "mvn install -DskipTests"
+              }
 	}
 }
 
