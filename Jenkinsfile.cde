@@ -10,12 +10,19 @@ node {
 		git url: "https://macpersia@bitbucket.org/planty-assistant-devs/planty-assistant-agent.git", branch: branch
 	}
 
-    //stage ('jdk preparation') {
-    //    tool name: 'jdk10', type: 'jdk'
-    //    env.JAVA_HOME="${tool 'jdk10'}"
-    //    env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
-    //    sh 'java -version'
-    //}
+    stage ('jdk preparation') {
+        //tool name: 'jdk10', type: 'jdk'
+        sh """
+            wget https://download.java.net/java/GA/jdk10/10.0.2/19aef61b38124481863b1413dce1855f/13/openjdk-10.0.2_linux-x64_bin.tar.gz"
+            tar -xvf openjdk-10.0.2_linux-x64_bin.tar.gz
+        """
+
+        //env.JAVA_HOME="${tool 'jdk10'}"
+        env.JAVA_HOME="./jdk-10.0.2"
+
+        env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
+        sh 'java -version'
+    }
 
 	stage('build') {
 		//withMaven(jdk: 'jdk10', maven: 'maven-3.6.0', /*, tempBinDir: ''*/) {
