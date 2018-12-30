@@ -11,7 +11,7 @@ node {
 	}
 
 	stage('build') {
-		withMaven(jdk: 'jdk10', maven: 'maven-3.6.0', /*, tempBinDir: ''*/) {
+		withMaven(jdk: 'jdk-10.0.2', maven: 'maven-3.6.0', /*, tempBinDir: ''*/) {
 			sh "mvn install -DskipTests"
 		}
 	}
