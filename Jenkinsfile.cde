@@ -26,8 +26,10 @@ node {
 	stage('build') {
 		//withMaven(jdk: 'jdk10', maven: 'maven-3.6.0', /*, tempBinDir: ''*/) {
         /* Requires the Docker Pipeline plugin to be installed */
-        docker.withRegistry('artifactory.topdanmark.local:5001')
-              .image('openjdk:10').inside('-v $HOME/.m2:/root/.m2') {
+        //docker.withRegistry('artifactory.topdanmark.local:5001')
+        //      .image('openjdk:10').inside('-v $HOME/.m2:/root/.m2') {
+        docker.image('artifactory.topdanmark.local:5001/openjdk:10')
+              .inside('-v $HOME/.m2:/root/.m2') {
                     sh 'java -version'
                     sh "mvn install -DskipTests"
               }
