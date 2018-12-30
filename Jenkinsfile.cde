@@ -1,4 +1,4 @@
-node {
+node ('ecs2') {
 	def branch = "${env.BRANCH_NAME}".toLowerCase()
 
 	stage('git') {
