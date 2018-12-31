@@ -1,5 +1,5 @@
-node ('ecs2') {
 //node ('ecs-fargate') {
+node {
 	def branch = "${env.BRANCH_NAME}".toLowerCase()
 
 	stage('git') {
@@ -28,10 +28,7 @@ node ('ecs2') {
         /* Requires the Docker Pipeline plugin to be installed */
         //docker.withRegistry('artifactory.topdanmark.local:5001')
         //      .image('openjdk:10').inside('-v $HOME/.m2:/root/.m2') {
-        docker.image('artifactory.topdanmark.local:5001/jenkins/slave:latest-jdk11')
-              //.inside('-v $HOME/.m2:/root/.m2')
-              .inside
-              {
+        docker.image('artifactory.topdanmark.local:5001/jenkins/slave:latest-jdk11').inside('-v $HOME/.m2:/root/.m2') {
                     sh 'java -version'
                     sh "mvn install -DskipTests"
               }
