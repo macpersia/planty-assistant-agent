@@ -31,8 +31,7 @@ node ('ecs2') {
             docker.image('artifactory.topdanmark.local:5001/jenkins/slave:latest-jdk11').inside {
                 sh "which java"
                 sh "whereis java"
-                sh "ls -lad /usr/lib/jvm*"
-                sh "ls -lad /var/lib/jvm*"
+                sh "ls -la /usr/lib/jvm*"
                 sh 'java -version'
                 sh "mvn install -DskipTests"
             }
