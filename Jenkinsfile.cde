@@ -24,7 +24,7 @@ node ('ecs2') {
 //    }
 
 	stage('build') {
-		//withMaven(jdk: 'jdk10', maven: 'maven-3.6.0', /*, tempBinDir: ''*/) {
+		//withMaven(jdk: 'jdk-10.0.2', maven: 'maven-3.6.0', /*, tempBinDir: ''*/) {
         /* Requires the Docker Pipeline plugin to be installed */
         //docker.image('artifactory.topdanmark.local:5001/jenkins/slave:latest-jdk11')
                 //.withRun('-v $HOME/.m2:/root/.m2 -v $PWD:/tmp/planty-assistant-agent -v $MAVEN_HOME:/tmp/maven') { c ->
