@@ -30,7 +30,7 @@ node ('ecs2') {
             sh "docker logs ${c.id}"
             //sh "docker exec ${c.id} ls -la /usr/lib/jvm*"
             sh "docker exec ${c.id} java -version"
-            sh "docker exec ${c.id} ls -la `pwd`"
+            sh "docker exec ${c.id} ls -la \$(pwd)"
             sh "ls -la `pwd`"
             //sh "docker exec ${c.id} mvn install -DskipTests"
         }
