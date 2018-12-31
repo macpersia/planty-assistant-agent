@@ -36,7 +36,7 @@ node ('ecs2') {
             sh "docker exec ${c.id} java -version"
             sh "docker exec ${c.id} sh -c 'pwd'"
             sh "docker exec ${c.id} sh -c 'ls -la `pwd`'"
-            sh "docker exec ${c.id} sh -c 'cd /tmp/jenkins-workspaces/planty-assistant-agent; mvn install -DskipTests'"
+            sh "docker exec ${c.id} -w /tmp/jenkins-workspaces/planty-assistant-agent mvn install -DskipTests"
         }
 	}
 }
