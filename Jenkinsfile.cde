@@ -32,7 +32,7 @@ node ('ecs2') {
             sh "docker exec ${c.id} whereis java"
             sh "docker exec ${c.id} ls -la /usr/lib/jvm*"
             sh "docker exec ${c.id} java -version"
-            sh "ls -la $(pwd)"
+            sh "ls -la `pwd`"
             //sh "docker exec ${c.id} mvn install -DskipTests"
         }
 	}
