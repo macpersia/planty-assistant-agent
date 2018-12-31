@@ -27,14 +27,16 @@ node ('ecs2') {
 		//withMaven(jdk: 'jdk10', maven: 'maven-3.6.0', /*, tempBinDir: ''*/) {
         /* Requires the Docker Pipeline plugin to be installed */
         docker.image('artifactory.topdanmark.local:5001/jenkins/slave:latest-jdk11').withRun('-v $HOME/.m2:/root/.m2') { c ->
-                    sh "docker logs ${c.id}"
-                    sh "which java"
-                    sh "whereis java"
-                    sh "ls -lad /usr/lib/jvm*"
-                    sh "ls -lad /var/lib/jvm*"
-                    sh 'java -version'
-                    sh "mvn install -DskipTests"
-              }
+            sh "docker logs ${c.id}"
+            docker.image('artifactory.topdanmark.local:5001/jenkins/slave:latest-jdk11').inside {
+                sh "which java"
+                sh "whereis java"
+                sh "ls -lad /usr/lib/jvm*"
+                sh "ls -lad /var/lib/jvm*"
+                sh 'java -version'
+                sh "mvn install -DskipTests"
+            }
+        }
 	}
 }
 
