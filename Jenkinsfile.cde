@@ -25,18 +25,30 @@ node ('ecs2') {
 
 	stage('build') {
 		//withMaven(jdk: 'jdk10', maven: 'maven-3.6.0', /*, tempBinDir: ''*/) {
-        sh "pwd"
-        sh "ls -la `pwd`"
         /* Requires the Docker Pipeline plugin to be installed */
         docker.image('artifactory.topdanmark.local:5001/jenkins/slave:latest-jdk11')
-              .withRun('-v $HOME/.m2:/root/.m2 -v $PWD:/tmp/jenkins-workspaces/planty-assistant-agent') { c ->
-              
+                //.withRun('-v $HOME/.m2:/root/.m2 -v $PWD:/tmp/planty-assistant-agent -v $MAVEN_HOME:/tmp/maven') { c ->
+                //.withRun(''' \
+                //    --mount type=bind,source=$HOME/.m2,target=/root/.m2 \
+                //    --mount type=bind,source=$PWD,target=/tmp/planty-assistant-agent \
+                //    --mount type=bind,source=$MAVEN_HOME,target=/tmp/maven \
+                //''') { c ->
+                .withRun { c ->
+
             sh "docker logs ${c.id}"
-            //sh "docker exec ${c.id} ls -la /usr/lib/jvm*"
-            sh "docker exec ${c.id} java -version"
-            sh "docker exec ${c.id} sh -c 'pwd'"
-            sh "docker exec ${c.id} sh -c 'ls -la `pwd`'"
-            sh "docker exec -w /tmp/jenkins-workspaces/planty-assistant-agent ${c.id} mvn install -DskipTests"
+            sh "docker exec -t ${c.id} sh -c 'ls -lad ~/'"
+            sh "docker exec -t ${c.id} sh -c 'mkdir ~/.m2'"
+            sh "docker cp \$HOME/.m2/settings.xml    ${c.id}:\$HOME/.m2/settings.xml"
+            sh "docker cp \$PWD         ${c.id}:/tmp/planty-assistant-agent"
+            sh "docker cp \$MAVEN_HOME  ${c.id}:/tmp/maven"
+
+            //sh "docker exec -t ${c.id} ls -la /usr/lib/jvm*"
+            sh "docker exec -t ${c.id} java -version"
+            sh "docker exec -t ${c.id} ls -la /tmp/maven"
+            sh "docker exec -t ${c.id} ls -la /tmp/planty-assistant-agent"
+            sh "docker exec -t ${c.id} sh -c 'pwd'"
+            sh "docker exec -t ${c.id} sh -c 'ls -la `pwd`'"
+            sh "docker exec -t -w /tmp/planty-assistant-agent ${c.id} /tmp/maven/bin/mvn install -DskipTests"
         }
 	}
 }
