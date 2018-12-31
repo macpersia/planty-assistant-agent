@@ -28,10 +28,9 @@ node ('ecs2') {
         /* Requires the Docker Pipeline plugin to be installed */
         docker.image('artifactory.topdanmark.local:5001/jenkins/slave:latest-jdk11').withRun('-v $HOME/.m2:/root/.m2') { c ->
             sh "docker logs ${c.id}"
-            sh "docker exec ${c.id} which java"
-            sh "docker exec ${c.id} whereis java"
-            sh "docker exec ${c.id} ls -la /usr/lib/jvm*"
+            //sh "docker exec ${c.id} ls -la /usr/lib/jvm*"
             sh "docker exec ${c.id} java -version"
+            sh "docker exec ${c.id} ls -la `pwd`"
             sh "ls -la `pwd`"
             //sh "docker exec ${c.id} mvn install -DskipTests"
         }
