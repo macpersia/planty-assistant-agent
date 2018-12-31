@@ -26,12 +26,15 @@ node {
 	stage('build') {
 		//withMaven(jdk: 'jdk10', maven: 'maven-3.6.0', /*, tempBinDir: ''*/) {
         /* Requires the Docker Pipeline plugin to be installed */
-        //docker.withRegistry('artifactory.topdanmark.local:5001')
-        //      .image('openjdk:10').inside('-v $HOME/.m2:/root/.m2') {
-        docker.image('artifactory.topdanmark.local:5001/jenkins/slave:latest-jdk11').inside('-v $HOME/.m2:/root/.m2') {
-                    sh 'java -version'
-                    sh "mvn install -DskipTests"
-              }
+        // Workaround from: https://github.com/jenkinsci/docker/issues/626
+        mkdir -p /var/jenkins_workspaces
+        chmod -R 777 /var/jenkins_workspaces
+        ws("/var/jenkins_workspaces/planty-assistant-agent") {
+            docker.image('artifactory.topdanmark.local:5001/jenkins/slave:latest-jdk11').inside('-v $HOME/.m2:/root/.m2 -v /var/jenkins_workspaces:/var/jenkins_workspaces -u 0:0') {
+                        sh 'java -version'
+                        sh "mvn install -DskipTests"
+                  }
+        }
 	}
 }
 
