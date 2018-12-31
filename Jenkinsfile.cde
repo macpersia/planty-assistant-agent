@@ -26,15 +26,17 @@ node ('ecs2') {
 	stage('build') {
 		//withMaven(jdk: 'jdk10', maven: 'maven-3.6.0', /*, tempBinDir: ''*/) {
         /* Requires the Docker Pipeline plugin to be installed */
-        // Workaround from: https://github.com/jenkinsci/docker/issues/626
-        sh "mkdir -p /tmp/jenkins_workspaces"
-        sh "chmod -R 777 /tmp/jenkins_workspaces"
-        ws("/tmp/jenkins_workspaces/planty-assistant-agent") {
-            docker.image('artifactory.topdanmark.local:5001/jenkins/slave:latest-jdk11').inside('-v $HOME/.m2:/root/.m2 -v /tmp/jenkins_workspaces:/tmp/jenkins_workspaces -u 0:0') {
+        //// Workaround from: https://github.com/jenkinsci/docker/issues/626
+        //sh "mkdir -p /tmp/jenkins_workspaces"
+        //sh "chmod -R 777 /tmp/jenkins_workspaces"
+        //ws("/tmp/jenkins_workspaces/planty-assistant-agent") {
+        //    docker.image('artifactory.topdanmark.local:5001/jenkins/slave:latest-jdk11').inside('-v $HOME/.m2:/root/.m2 -v /tmp/jenkins_workspaces:/tmp/jenkins_workspaces -u 0:0') {
+            docker.image('artifactory.topdanmark.local:5001/jenkins/slave:latest-jdk11').withRun('-v $HOME/.m2:/root/.m2 -v /tmp/jenkins_workspaces:/tmp/jenkins_workspaces -u 0:0') { c ->
+                        sh "docker logs ${c.id}"
                         sh 'java -version'
                         sh "mvn install -DskipTests"
                   }
-        }
+        //}
 	}
 }
 
