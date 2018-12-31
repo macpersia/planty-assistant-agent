@@ -25,6 +25,8 @@ node ('ecs2') {
 
 	stage('build') {
 		//withMaven(jdk: 'jdk10', maven: 'maven-3.6.0', /*, tempBinDir: ''*/) {
+        sh "pwd"
+        sh "ls -la `pwd`"
         /* Requires the Docker Pipeline plugin to be installed */
         docker.image('artifactory.topdanmark.local:5001/jenkins/slave:latest-jdk11')
               .withRun('-v $HOME/.m2:/root/.m2 -v $PWD:/tmp/jenkins-workspaces/planty-assistant-agent') { c ->
@@ -34,9 +36,7 @@ node ('ecs2') {
             sh "docker exec ${c.id} java -version"
             sh "docker exec ${c.id} sh -c 'pwd'"
             sh "docker exec ${c.id} sh -c 'ls -la `pwd`'"
-            sh "pwd"
-            sh "ls -la `pwd`"
-            sh "docker exec ${c.id} cd /tmp/jenkins-workspaces/planty-assistant-agent; mvn install -DskipTests"
+            sh "docker exec ${c.id} sh -c 'cd /tmp/jenkins-workspaces/planty-assistant-agent; mvn install -DskipTests'"
         }
 	}
 }
