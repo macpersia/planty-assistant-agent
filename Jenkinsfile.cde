@@ -38,10 +38,9 @@ node ('ecs2') {
 
             sh "docker logs ${c.id}"
             sh "docker exec -t ${c.id} sh -c 'ls -lad ~/'"
-            //sh "docker exec -t ${c.id} sh -c 'mkdir ~/.m2'"
-            ////sh "docker cp \$HOME/.m2/settings.xml ${c.id}:~/.m2/settings.xml"
-            //sh "docker cp \$HOME/.m2/settings.xml ${c.id}:/root/.m2/settings.xml"
-            sh "docker cp \$HOME/.m2 ${c.id}:/root/.m2"
+            sh "docker exec -t ${c.id} sh -c 'mkdir ~/.m2'"
+            //sh "docker cp \$HOME/.m2/settings.xml ${c.id}:~/.m2/settings.xml"
+            sh "docker cp \$HOME/.m2/settings.xml ${c.id}:/root/.m2/settings.xml"
 
             sh "docker cp \$PWD         ${c.id}:/tmp/planty-assistant-agent"
             sh "docker cp \$MAVEN_HOME  ${c.id}:/tmp/maven"
@@ -56,8 +55,6 @@ node ('ecs2') {
             sh "docker exec -t -w /tmp/planty-assistant-agent ${c.id} /tmp/maven/bin/mvn package -DskipTests"
             sh "docker cp ${c.id}:/tmp/planty-assistant-agent/target \$PWD/target"
             sh "ls -la \$PWD/target"
-            sh "docker cp ${c.id}:/root/.m2 \$HOME/.m2"
-            sh "ls -la \$HOME/.m2"
             topCompliance()
         }
 	}
