@@ -50,6 +50,11 @@ node ('ecs-fargate') {
             sh "docker exec -t ${c.id} ls -la /tmp/maven"
             sh "docker exec -t ${c.id} /tmp/maven/bin/mvn -v"
 
+            //print "Evaluating project.version..."
+            //def pomVerJStr = sh(script: "mvn help:evaluate -Dexpression=project.version | grep -v '^\\['", returnStdout: true)
+            //def pomVer = "${pomVerJStr}".split("\n").last()
+            //print "Evaluated project.version: ${pomVer}"
+
             sh "docker exec -t ${c.id} ls -la /tmp/planty-assistant-agent"
             sh "docker exec -t -w /tmp/planty-assistant-agent ${c.id} /tmp/maven/bin/mvn package -DskipTests"
             sh "docker cp ${c.id}:/tmp/planty-assistant-agent/target \$PWD/target"
