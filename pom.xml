@@ -20,9 +20,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <!-- Changed by Hadi -->
-        <!--<java.version>1.8</java.version>-->
-        <java.version>1.10</java.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -89,7 +88,8 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
+		<artifactId>maven-javadoc-plugin</artifactId>
+		<version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
